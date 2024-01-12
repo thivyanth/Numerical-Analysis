@@ -60,15 +60,24 @@ def bisection_method(f, a, b, tolerance, max_iterations):
 
 # Modified False Position Method
 def modified_false_position_method(f, a, b, tolerance, max_iterations):
+    fa, fb = f(a), f(b)
+
     for _ in range(max_iterations):
-        c = b - f(b) * (b - a) / (f(b) - f(a))
-        if abs(f(c)) < tolerance:
+        c = b - fb * (b - a) / (fb - fa)
+        fc = f(c)
+
+        if abs(fc) < tolerance:
             return c
-        elif f(a) * f(c) < 0:
-            b = c
+
+        if fa * fc < 0:
+            b, fb = c, fc
+            fa /= 2  # Halving the function value at 'a'
         else:
-            a = c
-    return c
+            a, fa = c, fc
+            fb /= 2  # Halving the function value at 'b'
+
+    return (a + b) / 2
+
 
 
 # Main program
