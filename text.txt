@@ -1,0 +1,46 @@
+# User input for method
+    print("Select a method: Newton, Bisection, Modified False Position. or 1, 2, 3")
+    method = input().strip()
+    if method == '1':
+        method = 'Newton'
+        print("Newton has been selected")
+    elif method == '2':
+        method = 'Bisection'
+        print("Bisection has been selected")
+    elif method == '3':
+        method = 'Modified False Position'
+        print("Modified False Position has been selected")
+
+    # User input for equation
+    print("Select an equation (1-4):")
+    eq_num = int(input().strip()) - 1
+
+    # Additional parameters based on method
+    if method == 'Newton':
+        print("Enter initial guess:")
+        x0 = float(input().strip())
+        print("Enter tolerance: or 0 for default")
+        tolerance = float(input().strip())
+        if tolerance == '0':
+            tolerance = 0.00001
+        print("Enter maximum iterations: or 0 for default")
+        max_iterations = int(input().strip())
+        if max_iterations == '0':
+            max_iterations = 100
+        result = methods[method](equations[eq_num], derivatives[eq_num], x0, tolerance, max_iterations)
+    else:
+        print("Enter lower bound:")
+        a = float(input().strip())
+        print("Enter upper bound:")
+        b = float(input().strip())
+        print("Enter tolerance: or 0 for default")
+        tolerance = float(input().strip())
+        if tolerance == '0':
+            tolerance = 1e-5
+        print("Enter maximum iterations: or 0 for default")
+        max_iterations = int(input().strip())
+        if max_iterations == '0':
+            max_iterations = 1000
+        result = methods[method](equations[eq_num], a, b, tolerance, max_iterations)
+
+    print("The result is:", result)
