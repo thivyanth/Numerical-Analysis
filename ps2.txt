@@ -1,0 +1,24 @@
+Write a computer program to perform polynomial interpolation of arbitrary order (n)
+using the following methods:
+(a) Newton's Fundamental Formula
+(b) Lagrange Interpolation scheme
+(c) Aitken's iterative interpolation scheme.
+Your program should prompt the user for: (a) which method to use, (b) order of
+the interpolation polynomial (n), and (c) value of x at which interpolation needs to be
+performed. After that either it should read {x0, . . . xn} and {f0,
+. . . , fn} from the input,
+or generate these quantities in a separate subroutine for the specifed function. Your
+task will be simplified if you store these values in arrays. To allow for an arbitrary value
+of n, use dynamic memory allocation for these, and, other arrays. Your interpolation
+subroutines should be fully general so that they allow interpolation of any function,
+and not just a particular function. Try your program for the function f(x) = cos(x),
+with 0 ≤ x ≤ 1, and xi = ih (0 ≤ i ≤ n), for various values of n and x. Note, here we
+are assuming equispaced arguments with h = (xn − x0)/n. Also print out the value of
+cos(x) computed by the corresponding inbuilt function. A check of your code is that
+for a given value of x and n, all the methods should yield the same result.
+Coding Hints: For method (a) you need the divided dierences of the form f[xi
+, xi+1, . . . xi+k]
+with 0 ≤ i ≤ n and 0 ≤ k ≤ n. It is most convenient to store them in a two dimensional array (Fortran 90 notation) diff(0 : n, 0 : n), as diff(i, k). Note that then they can
+be generated recursively using the inititalization diff(i, 0) = fi and the recursion relation
+diff(i, k) = (diff(i + 1, k − 1) − diff(i, k − 1))/(xk+i − xi). Note that a similar scheme can be
+used to store and generate the Aitken's array elements pi,i+1,i+2,...i+k.
