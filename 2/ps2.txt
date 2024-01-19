@@ -16,7 +16,7 @@ with 0 ≤ x ≤ 1, and xi = ih (0 ≤ i ≤ n), for various values of n and x. 
 are assuming equispaced arguments with h = (xn − x0)/n. Also print out the value of
 cos(x) computed by the corresponding inbuilt function. A check of your code is that
 for a given value of x and n, all the methods should yield the same result.
-Coding Hints: For method (a) you need the divided dierences of the form f[xi
+Coding Hints: For method (a) you need the divided differences of the form f[xi
 , xi+1, . . . xi+k]
 with 0 ≤ i ≤ n and 0 ≤ k ≤ n. It is most convenient to store them in a two dimensional array (Fortran 90 notation) diff(0 : n, 0 : n), as diff(i, k). Note that then they can
 be generated recursively using the inititalization diff(i, 0) = fi and the recursion relation
