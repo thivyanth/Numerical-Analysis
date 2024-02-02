@@ -15,16 +15,28 @@ def simpson_rule(f, a, b, n):
 
 # Define the Romberg integration
 def romberg_integration(f, a, b, tolerance):
-    R = [[0.5 * (f(a) + f(b)) * (b - a)]]
+    R = [[(f(a) + f(b)) * (b - a) / 2.0]]  # R[0][0] with one trapezoidal step
     n = 1
     while True:
+        # Compute the next row with trapezoidal estimates with 2^n steps
         h = (b - a) / (2 ** n)
-        R.append((R[n - 1][0] / 2) + h * sum(f(a + (k * h)) for k in range(1, 2 ** n, 2)))
+        trapezoid_est = 0.5 * R[n-1][0] + h * sum(f(a + (k - 0.5) * h) for k in range(1, 2 ** n))
+        R.append([trapezoid_est])
+        
+        # Compute the Richardson extrapolation values
         for m in range(1, n + 1):
-            R[n].append(R[n][m-1] + (R[n][m-1] - R[n-1][m-1]) / (4 ** m - 1))
+            extrapolated_val = R[n][m-1] + (R[n][m-1] - R[n-1][m-1]) / (4 ** m - 1)
+            R[n].append(extrapolated_val)
+        
+        # Check for convergence
         if abs(R[n][n] - R[n-1][n-1]) < tolerance:
             return R[n][n]
+        
         n += 1
+
+    # If max iterations are reached without convergence, return the last computed value
+    return R[-1][-1]
+
 
 # Define a function mapper
 function_mapper = {
