@@ -40,9 +40,9 @@ Ns = range(1, 20)
 converged_a = gauss_legendre_integral_a(50)
 converged_b = gauss_legendre_integral_b(50)
 converged_c = gauss_laguerre_integral_c(50)
-converged_d = gauss_laguerre_integral_d(50)
-converged_e = gauss_hermite_integral_e(20)  # Adjust as needed
-converged_f = gauss_hermite_integral_f(20)  # Adjust as needed
+converged_d = gauss_laguerre_integral_d(170)
+converged_e = gauss_hermite_integral_e(20) 
+converged_f = gauss_hermite_integral_f(20) 
 
 # Plotting
 fig, axs = plt.subplots(3, 2, figsize=(12, 18))
