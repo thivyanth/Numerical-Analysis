@@ -1,0 +1,64 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+
+\begin{document}
+
+\section*{Programming Assignment}
+
+The $N$-point Gaussian quadrature is defined by the general formula
+\begin{equation}
+    \int_{a}^{b} K(x)f(x)dx \approx \sum_{i=1}^{N}w_if(x_i),
+\end{equation}
+where $K(x)$ is a weight function, $x_i$ are data points that are roots of a polynomial of degree $N$, and $w_i$ are the weights. A Gaussian quadrature function takes as input the number $N$, and in the output gives the roots $x_i$ and the weights $w_i$ corresponding to that quadrature. Write a computer program that will compute the following integrals using the mentioned quadrature. For all the integrals, plot the integral value as a function of $N$ to study the convergence behavior.
+
+\begin{enumerate}
+    \item[(a)] Compute
+    \[
+    I = \int_{-1}^{1} e^{-x^2} dx
+    \]
+    using the Gauss-Legendre quadrature. For what value of $N$ do you get a result converged up to six decimal places?
+    
+    \item[(b)] Compute
+    \[
+    I = \int_{0}^{\frac{\pi}{2}} \ln(1 + x) dx
+    \]
+    using the Gauss-Legendre quadrature. First, you should carry out a change of variables so that the limits of integration become $\mp 1$. The value of this integral correct to six decimal places is $I \approx 0.8565690$. For what value of $N$ do you get this result?
+    
+    \item[(c)] Compute
+    \[
+    I = \int_{0}^{\infty} e^{-x} \sin x dx
+    \]
+    using the Gauss-Laguerre quadrature. The exact value of this integral is $I = 0.5$; for what value of $N$ do you get a result accurate to six places of decimal?
+    
+    \item[(d)] Compute
+    \[
+    I = \int_{0}^{\infty} \frac{e^{-x} \sqrt{x}}{x + 4} dx
+    \]
+    using the Gauss-Laguerre quadrature. Your converged value should be close to $0.16776$.
+    
+    \item[(e)] Compute
+    \[
+    I = \int_{-\infty}^{\infty} e^{-x^2} \sin^2 x dx
+    \]
+    using the Gauss-Hermite quadrature. For $N = 8$, you should get the value $I \approx 0.560202$, accurate up to six places of decimal.
+    
+    \item[(f)] Compute
+    \[
+    I = \int_{-\infty}^{\infty} \frac{e^{-x^2}}{\sqrt{1 + x^2}} dx
+    \]
+    also using Gauss-Hermite quadrature. For $N = 12$, you should get $I \approx 0.15239$.
+\end{enumerate}
+
+\subsection*{Important Notes:}
+You can use the following numpy functions for various Gaussian quadratures:
+\begin{itemize}
+    \item \texttt{polynomial.legendre.leggauss(deg)} for Gauss-Legendre quadrature
+    \item \texttt{numpy.polynomial.laguerre.laggauss(deg)} for Gauss-Laguerre quadrature
+    \item \texttt{polynomial.hermite.hermgauss(deg)} for Gauss-Hermite quadrature
+\end{itemize}
+For all the cases above, \texttt{deg} is nothing but $N$.
+
+If in any computer program you need the numerical value of $\pi$, calculate it using the formula $\pi = 4\cdot\tan^{-1}(1.0)$. Note that in python, the function for computing $\tan^{-1}x$ is \texttt{math.atan(x)}.
+
+\end{document}
