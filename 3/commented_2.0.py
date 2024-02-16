@@ -70,7 +70,8 @@ def romberg_integration(f, a, b, tolerance):
 
 # Define a dictionary to map input strings to function objects.
 function_mapper = {
-    'a': np.sin,
+    #'a': np.sin,
+    'a': lambda x: (1-0.5*np.sin(x)**2),
     'b': lambda x: np.exp(-x),
     'c': lambda x: 1 / (1 + x**2),
     'd': lambda x: 1 / x,
