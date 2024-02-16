@@ -46,23 +46,23 @@ def newtons_method(f, df, x0, tolerance, max_iterations):
 
 # Bisection Method for finding roots
 def bisection_method(f, a, b, tolerance, max_iterations):
-    fa, fb = f(a), f(b)
-    if fa * fb > 0:
+    fa, fb = f(a), f(b) # Function values at the ends of the interval
+    if fa * fb > 0: # If the function has the same sign at both ends, no root is bracketed
         # If the function has the same sign at both ends, no root is bracketed
         return "Interval does not bracket a root."
 
     for _ in range(max_iterations):
         mid = (a + b) / 2  # Middle point
-        f_mid = f(mid)
+        f_mid = f(mid)# Function value at the middle point
         if abs(f_mid) < tolerance or (b - a) / 2 < tolerance:
             # If middle point is close enough to root or interval is sufficiently small
             return mid
 
         # Narrow down the interval to the half where the root lies
         if fa * f_mid < 0:
-            b, fb = mid, f_mid
+            b, fb = mid, f_mid # Update the interval
         else:
-            a, fa = mid, f_mid
+            a, fa = mid, f_mid # Update the interval
 
 # Modified False Position Method for finding roots
 def modified_false_position_method(f, a, b, tolerance, max_iterations):
@@ -78,7 +78,7 @@ def modified_false_position_method(f, a, b, tolerance, max_iterations):
 
         # Update the interval and halve the function value on the side that is not being narrowed
         if fa * fc < 0:
-            b, fb = c, fc
+            b, fb = c, fc # Update the interval
             fa /= 2
         else:
             a, fa = c, fc
@@ -115,11 +115,11 @@ def main():
         for i, eq in enumerate(equations, start=1):
             results = []
             # Apply each method to each equation
-            results.append(methods['Newton'](eq, derivatives[i-1], newton_guesses[i-1], tolerance, max_iterations))
-            results.append(methods['Bisection'](eq, *bounds, tolerance, max_iterations))
-            results.append(methods['Modified False Position'](eq, *bounds, tolerance, max_iterations))
+            results.append(methods['Newton'](eq, derivatives[i-1], newton_guesses[i-1], tolerance, max_iterations)) # Use the corresponding derivative
+            results.append(methods['Bisection'](eq, *bounds, tolerance, max_iterations)) # Use the same bounds for both methods
+            results.append(methods['Modified False Position'](eq, *bounds, tolerance, max_iterations)) # Use the same bounds for both methods
             # Print the results
-            print("{:<10} {:<30} {:<30} {:<30}".format("Equation " + str(i), *results))
+            print("{:<10} {:<30} {:<30} {:<30}".format("Equation " + str(i), *results)) # Print the results
 
         print("The predetermined correct answers are 1.557, 1.369, 0.739, (0.624, 3.229, or 6.308)")
     else:
