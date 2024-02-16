@@ -1,17 +1,10 @@
-from sympy import symbols, Poly
+import numpy as np
 
-# Define the symbol
-x = symbols('x')
-
-# Define the polynomial
-polynomial = x**4 - 5*x**3 + 9*x**2 - 7*x + 2
-
-# Get coefficients of the polynomial
-poly_obj = Poly(polynomial)
-a0, a1, a2, a3, a4 = poly_obj.all_coeffs()
+# Coefficients of the polynomial
+a0, a1, a2, a3, a4 = 1, -5, 9, -7, 2
 
 # Initial guess for the root
-x_k = 1
+x_k = 1.0
 
 # Number of iterations for convergence
 iterations = 10
@@ -30,6 +23,5 @@ for _ in range(iterations):
 # The last computed root is our best estimate
 dominant_root = roots[-1]
 
-# Evaluate to get a numerical value
-numerical_value = dominant_root.evalf()
-print()
+# Output the numerical value of the dominant root
+print(dominant_root)
