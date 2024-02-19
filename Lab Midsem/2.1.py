@@ -1,27 +1,44 @@
+import sympy as sp
 import numpy as np
 
-# Coefficients of the polynomial
-a0, a1, a2, a3, a4 = 1, -5, 9, -7, 2
 
-# Initial guess for the root
-x_k = 1.0
+# Define the function to integrate
+def f(x):
+    return 1 - 0.5 * sp.sin(x)**2
 
-# Number of iterations for convergence
-iterations = 10
+# Implement the Newton's forward difference formula for integration
+def newtons_forward_difference_integration(a, b, n):
+    # Calculate the width of each interval
+    h = (b - a) / n
+    # Initialize the sum
+    integral_sum = 0
+    # Calculate the values using the formula
+    for i in range(0, n, 3):  # N must be a multiple of 3
+        x0 = a + i * h
+        f0 = f(x0)
+        f1 = f(x0 + h)
+        f2 = f(x0 + 2*h)
+        f3 = f(x0 + 3*h)
+        integral_sum += (3 * h / 8) * (f0 + 3 * f1 + 3 * f2 + f3)
+    return integral_sum
 
-# Applying Bernoulli's method
-roots = []
-for _ in range(iterations):
-    # Calculate the next estimate using Bernoulli's formula
-    r_k = (a1*x_k**3 + a2*x_k**2 + a3*x_k + a4) / (a0*x_k**4)
-    x_k_plus_1 = r_k * x_k
-    roots.append(x_k_plus_1)
+# Function to find the appropriate N and integrate
+def integrate_to_accuracy(a, b, desired_accuracy):
+    # Start with N as a multiple of 3
+    N = 3
+    while True:
+        result = newtons_forward_difference_integration(a, b, N)
+        # Check if the result is accurate to four decimal places
+        if round(result, 4) == round(desired_accuracy, 4):
+            return result, N
+        N += 3  # Increase N by multiples of 3
 
-    # Update the current estimate
-    x_k = x_k_plus_1
+# The interval of integration from the problem
+a = 0
+b = sp.pi / 2
+# The desired accuracy
+desired_accuracy = 1.1781
 
-# The last computed root is our best estimate
-dominant_root = roots[-1]
-
-# Output the numerical value of the dominant root
-print(dominant_root)
+# Find the N that gives the desired accuracy and the result of integration
+result, N = integrate_to_accuracy(a, b, desired_accuracy)
+print(result, N)
