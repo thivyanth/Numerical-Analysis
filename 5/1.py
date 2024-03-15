@@ -8,26 +8,23 @@ class SchrageLCG:
         self.q = self.m // self.a
         self.r = self.m % self.a
     
-    def next(self):
+    def random(self):
         # Schrage factorization to prevent overflow
         self.state = (self.a * (self.state % self.q) - self.r * (self.state // self.q)) % self.m
-        return self.state
-
-    def random(self):
-        # Return a float number based on current state
-        return float(self.next()) / self.m
+        return float(self.state) / self.m
 
 def simple_lcg(seed, a=16807, m=(2**31) - 1):
     # Simple LCG for comparison, without Schrage factorization
-    seed = (a * seed) % m
-    return seed, float(seed) / m
+    while True:
+        seed = (a * seed) % m
+        yield float(seed) / m
 
 def metropolis_integral(compute_random, N=1000, delta=0.4, M=15):
     Z = 0.46265167
-    x = compute_random()  # initial x from random number generator
+    x = next(compute_random)  # initial x from random number generator
     samples = []
     for _ in range(N * M):
-        x_new = x + delta * (2 * compute_random() - 1)
+        x_new = x + delta * (2 * next(compute_random) - 1)
         if 0 <= x_new <= 1:
             if np.random.random() < min(1, (np.exp(x_new**2) - 1) / (np.exp(x**2) - 1)):
                 x = x_new
@@ -46,12 +43,8 @@ if rng_choice == '1':
     rng = SchrageLCG(seed)
     compute_random = rng.random
 elif rng_choice == '2':
-    # Update the seed value each time for simple LCG
-    def compute_random_simple_lcg():
-        #nonlocal seed
-        seed, random_number = simple_lcg(seed)
-        return random_number
-    compute_random = compute_random_simple_lcg
+    simple_rng = simple_lcg(seed)
+    compute_random = simple_rng
 
 # Compute the integral
 integral_value = metropolis_integral(compute_random, N=N)
