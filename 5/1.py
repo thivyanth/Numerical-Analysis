@@ -1,28 +1,52 @@
 import numpy as np
-import random
 
-def w(x):
-    return np.exp(x**2) - 1
+class SchrageLCG:
+    def __init__(self, seed, a=16807, m=(2**31) - 1):
+        self.state = seed
+        self.a = a
+        self.m = m
+        self.q = self.m // self.a
+        self.r = self.m % self.a
+    
+    def next(self):
+        # Schrage factorization to prevent overflow
+        self.state = (self.a * (self.state % self.q) - self.r * (self.state // self.q)) % self.m
+        return self.state
 
-def g(x):
-    return x**2 / (np.exp(x**2) - 1)
+    def random(self):
+        return float(self.next()) / self.m
 
-def metropolis(N, delta=0.4, M=15):
+def simple_lcg(seed, a=16807, m=(2**31) - 1):
+    # Simple LCG for comparison, without Schrage factorization
+    seed = (a * seed) % m
+    return seed, float(seed) / m
+
+def metropolis_integral(compute_random, N=1000, delta=0.4, M=15):
+    Z = 0.46265167
+    x = compute_random()[1]  # initial x from random number generator
     samples = []
-    x = random.random()  # initial x from uniform[0, 1]
     for _ in range(N * M):
-        x_new = x + delta * (2 * random.random() - 1)  # proposed move
-        if 0 <= x_new <= 1 and random.random() < min(1, w(x_new) / w(x)):
-            x = x_new  # accept move with Metropolis criterion
+        x_new = x + delta * (2 * compute_random()[1] - 1)
+        if 0 <= x_new <= 1:
+            if np.random.random() < min(1, (np.exp(x_new**2) - 1) / (np.exp(x**2) - 1)):
+                x = x_new
         if _ % M == 0:
-            samples.append(x)
-    return np.mean([g(x) for x in samples])
+            samples.append(x**2 / (np.exp(x**2) - 1))
+    return Z * np.mean(samples)
 
-# Z value is provided
-Z = 0.46265167
+# Ask user for which RNG to use
+rng_choice = input("Choose the RNG method (Enter '1' for Schrage LCG, '2' for simple LCG): ")
 
-# Compute the integral for various N
-for N in [10, 100, 1000, 10000, 100000]:
-    avg_g = metropolis(N)
-    I = Z * avg_g
-    print(f"N = {N}, Estimated Integral = {I}")
+seed = int(input("Enter a seed (positive integer): "))
+N = int(input("Enter the number of sampling points N (e.g., 1000): "))
+
+if rng_choice == '1':
+    rng = SchrageLCG(seed)
+    compute_random = rng.random
+elif rng_choice == '2':
+    compute_random = lambda: simple_lcg(seed)
+    seed = compute_random()[0]  # To advance the seed
+
+# Compute the integral
+integral_value = metropolis_integral(compute_random, N=N)
+print(f"The estimated value of the integral is {integral_value}")
