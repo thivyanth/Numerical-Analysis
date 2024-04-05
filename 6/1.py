@@ -1,14 +1,12 @@
 import numpy as np
+import matplotlib.pyplot as plt
 
-# Differential equation
 def F(x, y):
     return x + y
 
-# Exact solution
 def y_exact(x):
     return np.exp(x) - x - 1
 
-# Euler method
 def euler_method(h, x_max):
     x = np.arange(0, x_max + h, h)
     y = np.zeros(len(x))
@@ -16,7 +14,6 @@ def euler_method(h, x_max):
         y[i] = y[i-1] + h * F(x[i-1], y[i-1])
     return x, y
 
-# Fourth-order Taylor expansion
 def taylor_method(h, x_max):
     x = np.arange(0, x_max + h, h)
     y = np.zeros(len(x))
@@ -27,7 +24,6 @@ def taylor_method(h, x_max):
                (h**4 / 24) * (1 + F(x[i-1], y[i-1]))
     return x, y
 
-# Fourth-order Runge-Kutta method
 def runge_kutta_method(h, x_max):
     x = np.arange(0, x_max + h, h)
     y = np.zeros(len(x))
@@ -39,8 +35,17 @@ def runge_kutta_method(h, x_max):
         y[i + 1] = y[i] + (k0 + 2*k1 + 2*k2 + k3) / 6
     return x, y
 
-# Main program
-def solve_ode():
+def plot_solution(x, y_numerical, y_exact_values):
+    plt.figure(figsize=(10, 6))
+    plt.plot(x, y_numerical, 'b-', label='Numerical Solution')
+    plt.plot(x, y_exact_values, 'r--', label='Exact Solution')
+    plt.xlabel('x')
+    plt.ylabel('y')
+    plt.legend()
+    plt.title('Comparison of Numerical and Exact Solutions')
+    plt.show()
+
+def solve_ode_and_plot():
     h = float(input("Enter step size h: "))
     x_max = float(input("Enter maximum value of x (x_max): "))
     method = input("Choose the method (euler/taylor/runge_kutta): ")
@@ -55,8 +60,10 @@ def solve_ode():
         print("Invalid method.")
         return
     
+    y_exact_values = y_exact(x)
+    plot_solution(x, y, y_exact_values)
+    
     for i in range(len(x)):
         print(f"x = {x[i]:.4f}, y = {y[i]:.4f}, y_exact = {y_exact(x[i]):.4f}")
 
-# Uncomment the following line to run the program
-solve_ode()
+solve_ode_and_plot()
