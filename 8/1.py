@@ -4,8 +4,8 @@ import matplotlib.pyplot as plt
 # Parameters
 L = 1.0          # Length of the domain
 t_max = 1.0      # Maximum time
-N = 10           # Number of spatial divisions
-M = 200          # Number of time divisions
+N = 100           # Number of spatial divisions
+M = 20000        # Number of time divisions
 h = L / N        # Spatial step size
 k = t_max / M    # Time step size
 sigma = 0.5      # Stability parameter, sigma = k/h^2
